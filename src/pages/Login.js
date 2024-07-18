@@ -38,7 +38,7 @@ const Login = () => {
         navigate('/signup')
     }
     const linkResetPasswordPage = (e) => {
-        navigate('/resetPassword')
+        navigate('/reset/password')
     }
     return (
         <Container className="login-container mt-5">

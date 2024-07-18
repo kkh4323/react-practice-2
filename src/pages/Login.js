@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import './style.css';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import GoogleIcon from "../assets/img/icon-google.png";
 import KakaoIcon from "../assets/img/icon-kakao.png";
 import NaverIcon from "../assets/img/icon-naver.png"
@@ -9,6 +9,9 @@ import axios from "axios";
 
 
 const Login = () => {
+
+    const navigate = useNavigate()
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,9 +22,24 @@ const Login = () => {
             password
         };
         console.log(userInput);
+        try {
+            const url = "http://localhost:8000/api/auth/login"
+            const result = await axios.post(url, userInput)
+            console.log('+++++', result)
+            if (result.status === 201) {
+                navigate('/profile')
+            }
+        } catch (err) {
+            console.log(err)
+        }
     };
 
-
+    const linkSignupPage = (e) => {
+        navigate('/signup')
+    }
+    const linkResetPasswordPage = (e) => {
+        navigate('/resetPassword')
+    }
     return (
         <Container className="login-container mt-5">
             <h2 className="text-center mb-4">로그인</h2>
@@ -47,8 +65,9 @@ const Login = () => {
                 <Button variant="primary" type="submit" className="w-100 mb-3">
                     로그인
                 </Button>
-                <div className="text-center mb-3">
-                    <Link to="/users/password/new" className="text-muted">비밀번호를 잊으셨나요?</Link>
+                <div className="text-center mb-3 d-flex">
+                    <h6 style={{marginRight: "20px"}} onClick={linkResetPasswordPage}>비밀번호 재설정</h6>
+                    <h6 onClick={linkSignupPage}>회원가입</h6>
                 </div>
                 <div className="social-login-buttons">
                     <Button variant="light" className="w-100 mb-2">

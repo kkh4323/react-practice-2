@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import './style.css';
 import GoogleIcon from "../assets/img/icon-google.png";
@@ -15,11 +15,20 @@ const Signup = () => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [phone, setPhone] = useState('')
+    const [verifyingCode, setVerifyingCode] = useState('')
     const [overTwenty, setOverTwenty] = useState(false)
     const [useTerm, setUseTerm] = useState(false)
     const [personalInfo, setPersonalInfo] = useState(false)
     const [marketingAgree, setMarketingAgree] = useState(false)
     const [etc, setEtc] = useState(false)
+
+    const [sendEmailBtnDisable, setSendEmailBtnDisable] = useState(true)
+    const [submitBtnDisable, setSubmitBtnDisable] = useState(true)
+    const [verifyCodeShow, setVerifyCodeShow] = useState(false)
+
+
+
+
     const submitHandler = async (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
@@ -52,7 +61,46 @@ const Signup = () => {
 
 
     }
+    const sendEmail = async (e) => {
+        e.preventDefault()
 
+        const userInput = {email}
+        try {
+            const url = "http://localhost:8000/api/auth/email/send";
+            const result = await axios.post(url, userInput);
+            console.log('+++++++++++++++++', result)
+            if (result.status === 201) {
+                setVerifyCodeShow(true)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const checkVerifyingCode = async (e) => {
+        e.preventDefault()
+
+        const userInput = {
+            email,
+            code: verifyingCode
+        }
+        try {
+            const url = "http://localhost:8000/api/auth/email/verify"
+            const result = await axios.post(url, userInput)
+            console.log(result)
+            if (result.status === 201) {
+                setVerifyCodeShow(false)
+                setSubmitBtnDisable(false)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const linkLoginPage = (e) => {
+        navigate('/login')
+    }
+    useEffect(() => {
+
+    }, []);
     return (
         <Container className={"mt-5"}>
             <Row className="justify-content-md-center mt-5">
@@ -72,7 +120,7 @@ const Signup = () => {
                             </Button>
                         </div>
                     </div>
-                    <Form onSubmit={submitHandler}>
+                    <Form className="d-grid" onSubmit={submitHandler}>
                         <Form.Group className="mb-3" controlId="email">
                             <Form.Label style={{fontWeight: "bold"}}>이메일 주소</Form.Label>
                             <Form.Control
@@ -82,6 +130,26 @@ const Signup = () => {
                                 onChange={e => setEmail(e.target.value)}
                             />
                         </Form.Group>
+                        <Button className={"mb-3"} variant="primary" onClick={sendEmail}>
+                            이메일 인증하기
+                        </Button>
+                        {verifyCodeShow ? (
+                            <Form.Group className={"mb-3 d-grid"}>
+                                <Form.Label>이메일로 받은 인증코드를 입력해주세요</Form.Label>
+                                <Form.Control
+                                    type="string"
+                                    placeholder="인증코드 6자리"
+                                    value={verifyingCode}
+                                    onChange={e => setVerifyingCode(e.target.value)}
+                                    className={"mb-3"}
+                                >
+                                </Form.Control>
+                                <Button className={"mb-3"} variant="primary" onClick={checkVerifyingCode}>
+                                    이메일 확인
+                                </Button>
+                            </Form.Group>
+                        ) : null}
+
                         <Form.Group className="mb-3" controlId="username">
                             <Form.Label style={{fontWeight: "bold"}}>닉네임</Form.Label>
                             <Form.Control
@@ -160,10 +228,14 @@ const Signup = () => {
                                 />
                             </Form.Group>
                         </div>
-                        <Button variant="primary" type="submit">
+                        <Button className="mb-5" variant="primary" type="submit" disabled={submitBtnDisable}>
                             Submit
                         </Button>
                     </Form>
+                    <div style={{display: "flex"}}>
+                        <h6 style={{marginRight: "10px"}}>이미 아이디가 있으신가요?</h6>
+                        <h6 onClick={linkLoginPage} style={{color: "blue"}}> 로그인</h6>
+                    </div>
                 </Col>
             </Row>
         </Container>

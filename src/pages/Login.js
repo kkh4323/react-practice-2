@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import {Alert, Button, Container, Form} from 'react-bootstrap';
 import './style.css';
 import {Link, useNavigate} from "react-router-dom";
 import GoogleIcon from "../assets/img/icon-google.png";
@@ -14,6 +14,7 @@ const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errAlert, setErrAlert] = useState(false);
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -24,13 +25,17 @@ const Login = () => {
         console.log(userInput);
         try {
             const url = "http://localhost:8000/api/auth/login"
-            const result = await axios.post(url, userInput)
-            console.log('+++++', result)
-            if (result.status === 201) {
+            const { data, status } = await axios.post(url, userInput)
+            console.log('+++++', data.accessToken)
+            if (status === 201) {
+                localStorage.setItem("accessToken", data.accessToken)
                 navigate('/profile')
             }
         } catch (err) {
-            console.log(err)
+            if (err.response.status === 400) {
+                setErrAlert(true)
+            }
+            console.log(err.response.status)
         }
     };
 
@@ -42,6 +47,14 @@ const Login = () => {
     }
     return (
         <Container className="login-container mt-5">
+            {errAlert ? (
+                <Alert variant="danger" onClose={() => setErrAlert(false)} dismissible>
+                    <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                    <p>
+                        Password do not matched!
+                    </p>
+                </Alert>
+            ) : null}
             <h2 className="text-center mb-4">로그인</h2>
             <Form onSubmit={submitHandler} className="login-form">
                 <Form.Group className="mb-3" controlId="email">

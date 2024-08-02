@@ -7,6 +7,7 @@ import KakaoIcon from "../assets/img/icon-kakao.png";
 import NaverIcon from "../assets/img/icon-naver.png"
 import axios from "axios";
 import ErrAlert from "../components/ErrAlert";
+import InputForm from "../components/InputForm";
 
 
 const Login = () => {
@@ -34,7 +35,7 @@ const Login = () => {
             if (err.response.status === 400) {
                 setErrAlert(true)
             }
-            console.log(err.response.status)
+            console.log(err)
         }
     };
 
@@ -60,24 +61,20 @@ const Login = () => {
             ) : null}
             <h2 className="text-center mb-4">로그인</h2>
             <Form onSubmit={submitHandler} className="login-form">
-                <Form.Group className="mb-3" controlId="email">
-                    <Form.Label>이메일 주소</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="이메일을 입력하세요"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="password">
-                    <Form.Label>비밀번호</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="비밀번호"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
-                </Form.Group>
+                <InputForm
+                    label={'이메일 주소'}
+                    type={'email'}
+                    placeholder={'이메일을 입력하세요'}
+                    value={email}
+                    func={e => setEmail(e.target.value)}
+                />
+                <InputForm
+                    label={'비밀번호'}
+                    type={'password'}
+                    placeholder={'비밀번호'}
+                    value={password}
+                    func={e => setPassword(e.target.value)}
+                />
                 <Button variant="primary" type="submit" className="w-100 mb-3">
                     로그인
                 </Button>

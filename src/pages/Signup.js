@@ -6,6 +6,8 @@ import KakaoIcon from "../assets/img/icon-kakao.png";
 import NaverIcon from "../assets/img/icon-naver.png";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import InputForm from "../components/InputForm";
+import AgreeCheck from "../components/AgreeCheck";
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -121,15 +123,13 @@ const Signup = () => {
                         </div>
                     </div>
                     <Form className="d-grid" onSubmit={submitHandler}>
-                        <Form.Group className="mb-3" controlId="email">
-                            <Form.Label style={{fontWeight: "bold"}}>이메일 주소</Form.Label>
-                            <Form.Control
-                                type="email"
-                                placeholder="이메일 입력"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                            />
-                        </Form.Group>
+                        <InputForm
+                            label={'이메일 주소'}
+                            type={'email'}
+                            placeholder={'이메일을 입력하세요'}
+                            value={email}
+                            func={e => setEmail(e.target.value)}
+                        />
                         <Button className={"mb-3"} variant="primary" onClick={sendEmail}>
                             이메일 인증하기
                         </Button>
@@ -149,84 +149,51 @@ const Signup = () => {
                                 </Button>
                             </Form.Group>
                         ) : null}
-
-                        <Form.Group className="mb-3" controlId="username">
-                            <Form.Label style={{fontWeight: "bold"}}>닉네임</Form.Label>
-                            <Form.Control
-                                type="string"
-                                placeholder="닉네임 입력"
-                                value={username}
-                                onChange={e => setUsername(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label style={{fontWeight: "bold"}}>비밀번호</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="비밀번호 입력"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="confirmPassword">
-                            <Form.Label style={{fontWeight: "bold"}}>비밀번호 확인</Form.Label>
-                            <Form.Control
-                                type="password"
-                                placeholder="비밀번호 확인"
-                                value={confirmPassword}
-                                onChange={e => setConfirmPassword(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="phone">
-                            <Form.Label style={{fontWeight: "bold"}}>전화번호</Form.Label>
-                            <Form.Control
-                                type="string"
-                                placeholder="전화번호 입력"
-                                value={phone}
-                                onChange={e => setPhone(e.target.value)}
-                            />
-                        </Form.Group>
+                        <InputForm
+                            label={'닉네임'}
+                            placeholder={'닉네임을 입력하세요.'}
+                            value={username}
+                            func={e => setUsername(e.target.value)}
+                        />
+                        <InputForm
+                            label={'비밀번호'}
+                            placeholder={'비밀번호를 입력하세요.'}
+                            value={password}
+                            func={e => setPassword(e.target.value)}
+                        />
+                        <InputForm
+                            label={'비밀번호 확인'}
+                            placeholder={'비밀번호를 한 번 더 입력해주세요.'}
+                            value={confirmPassword}
+                            func={e => setConfirmPassword(e.target.value)}
+                        />
+                        <InputForm
+                            label={'전화번호'}
+                            placeholder={'전화번호를 입력해주세요.'}
+                            value={phone}
+                            func={e => setPhone(e.target.value)}
+                        />
                         <div>
-                            <Form.Group className="mb-2" controlId="overTwenty">
-                                <Form.Check
-                                    required
-                                    label="20세 이상입니다."
-                                    feedback="필수 동의 사항입니다."
-                                    feedbackType="invalid"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="useTerm">
-                                <Form.Check
-                                    required
-                                    label="이용 약관에 동의합니다."
-                                    feedback="필수 동의 사항입니다."
-                                    feedbackType="invalid"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="personalInfo">
-                                <Form.Check
-                                    required
-                                    label="개인정보 제공에 동의합니다.."
-                                    feedback="필수 동의 사항입니다."
-                                    feedbackType="invalid"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="marketingAgree">
-                                <Form.Check
-                                    required
-                                    label="마케팅 약관에 동의합니다."
-                                    feedback="필수 동의 사항입니다."
-                                    feedbackType="invalid"
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-2" controlId="etc">
-                                <Form.Check
-                                    required
-                                    label="기타 등등 암튼 동의합니다."
-                                    feedback="필수 동의 사항입니다."
-                                    feedbackType="invalid"
-                                />
-                            </Form.Group>
+                            <AgreeCheck
+                                label={'20세 이상입니다.'}
+                                feedback={'필수 동의 사항입니다.'}
+                            />
+                            <AgreeCheck
+                                label={'이용 약관에 동의합니다.'}
+                                feedback={'필수 동의 사항입니다.'}
+                            />
+                            <AgreeCheck
+                                label={'개인정보 제공에 동의합니다.'}
+                                feedback={'필수 동의 사항입니다.'}
+                            />
+                            <AgreeCheck
+                                label={'마케팅 약관에 동의합니다.'}
+                                feedback={'필수 동의 사항입니다.'}
+                            />
+                            <AgreeCheck
+                                label={'기타 등등 동의합니다.'}
+                                feedback={'필수 동의 사항입니다.'}
+                            />
                         </div>
                         <Button className="mb-5" variant="primary" type="submit" disabled={submitBtnDisable}>
                             Submit

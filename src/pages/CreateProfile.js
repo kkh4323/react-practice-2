@@ -107,7 +107,34 @@ const CreateProfile = () => {
                                 onChange={e => setGraduated(e.target.value)}
                             />
                         </Form.Group>
-                        <Button className="mb-5" variant="primary" type="submit">
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="graduated">
+                                    <Form.Label style={{fontWeight: "bold"}}>혈액형</Form.Label>
+                                    <Form.Select aria-label="Default select example">
+                                        <option>혈액형을 골라주세요.</option>
+                                        <option value="0">Type A</option>
+                                        <option value="1">Type B</option>
+                                        <option value="2">Type O</option>
+                                        <option value="3">Type AB</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className="mb-3" controlId="graduated">
+                                    <Form.Label style={{fontWeight: "bold"}}>성별</Form.Label>
+                                    <Form.Select aria-label="Default select example">
+                                        <option>성별을 선택해주세요.</option>
+                                        <option value="0">남성</option>
+                                        <option value="1">여성</option>
+                                        <option value="2">기타</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
+
+                        <Button className="mt-3" variant="primary" type="submit">
                             {birthday !== null ? '수정' : '저장'}
                         </Button>
                     </Form>

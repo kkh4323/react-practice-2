@@ -6,6 +6,7 @@ import GoogleIcon from "../assets/img/icon-google.png";
 import KakaoIcon from "../assets/img/icon-kakao.png";
 import NaverIcon from "../assets/img/icon-naver.png"
 import axios from "axios";
+import ErrAlert from "../components/ErrAlert";
 
 
 const Login = () => {
@@ -22,11 +23,9 @@ const Login = () => {
             email,
             password
         };
-        console.log(userInput);
         try {
             const url = "http://localhost:8000/api/auth/login"
             const { data, status } = await axios.post(url, userInput)
-            console.log('+++++', data.accessToken)
             if (status === 201) {
                 localStorage.setItem("accessToken", data.accessToken)
                 navigate('/profile')
@@ -48,12 +47,16 @@ const Login = () => {
     return (
         <Container className="login-container mt-5">
             {errAlert ? (
-                <Alert variant="danger" onClose={() => setErrAlert(false)} dismissible>
-                    <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-                    <p>
-                        Password do not matched!
-                    </p>
-                </Alert>
+                // <Alert variant="danger" onClose={() => setErrAlert(false)} dismissible>
+                //     <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                //     <p>
+                //         Password do not matched!
+                //     </p>
+                // </Alert>
+                <ErrAlert
+                    func={() => setErrAlert(false)}
+                    message={'Password do not matched!'}
+                />
             ) : null}
             <h2 className="text-center mb-4">로그인</h2>
             <Form onSubmit={submitHandler} className="login-form">

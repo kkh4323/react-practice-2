@@ -8,6 +8,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import InputForm from "../components/InputForm";
 import AgreeCheck from "../components/AgreeCheck";
+import agreeCheck from "../components/AgreeCheck";
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -37,17 +38,21 @@ const Signup = () => {
             alert('please check password')
             return
         }
+        const agreeOfTerm = {
+            overTwenty,
+            useTerm,
+            personalInfo,
+            marketingAgree,
+            etc
+        }
         const userInput = {
             username,
             email,
             password,
             phone,
-            // overTwenty,
-            // useTerm,
-            // personalInfo,
-            // marketingAgree,
-            // etc
+            agreeOfTerm,
         }
+        console.log("userInput", userInput)
         try {
             const url = "http://localhost:8000/api/auth/signup";
 
@@ -59,9 +64,6 @@ const Signup = () => {
         } catch (err) {
             console.log(err)
         }
-        console.log("*************", userInput)
-
-
     }
     const sendEmail = async (e) => {
         e.preventDefault()
@@ -173,26 +175,39 @@ const Signup = () => {
                             value={phone}
                             func={e => setPhone(e.target.value)}
                         />
-                        <div>
-                            <AgreeCheck
-                                label={'20세 이상입니다.'}
-                                feedback={'필수 동의 사항입니다.'}
+                        <div className="mb-3">
+                            <Form.Check // prettier-ignore
+                                required
+                                type={'checkbox'}
+                                label={`20세 이상입니다.`}
+                                value={overTwenty}
+                                onChange={e=> setOverTwenty(!overTwenty)}
                             />
-                            <AgreeCheck
-                                label={'이용 약관에 동의합니다.'}
-                                feedback={'필수 동의 사항입니다.'}
+                            <Form.Check // prettier-ignore
+                                required
+                                type={'checkbox'}
+                                label={`이용 약관에 동의합니다.`}
+                                value={useTerm}
+                                onChange={e=> setUseTerm(!useTerm)}
                             />
-                            <AgreeCheck
-                                label={'개인정보 제공에 동의합니다.'}
-                                feedback={'필수 동의 사항입니다.'}
+                            <Form.Check // prettier-ignore
+                                required
+                                type={'checkbox'}
+                                label={`개인정보 제공에 동의합니다.`}
+                                value={personalInfo}
+                                onChange={e=> setPersonalInfo(!personalInfo)}
                             />
-                            <AgreeCheck
-                                label={'마케팅 약관에 동의합니다.'}
-                                feedback={'필수 동의 사항입니다.'}
+                            <Form.Check // prettier-ignore
+                                type={'checkbox'}
+                                label={`마케팅 정보를 수신하겠습니다.`}
+                                value={marketingAgree}
+                                onChange={e=> setMarketingAgree(!marketingAgree)}
                             />
-                            <AgreeCheck
-                                label={'기타 등등 동의합니다.'}
-                                feedback={'필수 동의 사항입니다.'}
+                            <Form.Check // prettier-ignore
+                                type={'checkbox'}
+                                label={`기타 약관에 동의합니다.`}
+                                value={etc}
+                                onChange={e=> setEtc(!etc)}
                             />
                         </div>
                         <Button className="mb-5" variant="primary" type="submit" disabled={submitBtnDisable}>

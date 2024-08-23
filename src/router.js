@@ -27,6 +27,10 @@ const router = createBrowserRouter([
         element: <CreateProfile/>
     },
     {
+        path: '/profile/:profileId',
+        element: <CreateProfile/>
+    },
+    {
         path: '/reset/password',
         element: <ResetPassword/>
     },
